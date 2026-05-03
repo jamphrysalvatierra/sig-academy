@@ -245,10 +245,11 @@ audio.player{width:100%;border-radius:8px;height:36px}
           <div class="abox-icon">🎧</div>
           <div>
             <div class="abox-title" id="mAudioTitle"></div>
-            <div class="abox-sub">Escuchar capítulo completo · M4A</div>
+            <div class="abox-sub">Escuchar capítulo completo</div>
           </div>
         </div>
-        <audio id="mAudio" class="player" controls preload="none" style="width:100%;border-radius:8px;height:36px"></audio>
+        <iframe id="mAudio" style="width:100%;height:80px;border:none;border-radius:10px;background:transparent" allow="autoplay"></iframe>
+        <button id="mAudioBtn" style="margin-top:8px;width:100%;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">🔗 Abrir en Google Drive</button>
       </div>
 
       <!-- pdf -->
@@ -284,7 +285,7 @@ const chs = [
            "USA PATRIOT — reporte de actividad sospechosa ($5,000)",
            "Guía del comprador: antes de la prima inicial",
            "Disposición de Vistazo Gratis (Free Look)"],
-   pdf:"Guia_Cap_I.pdf",audio:"Audio_Cap_1.m4a",atitle:"Cap. I — Solicitud, Aseguramiento y Entrega"},
+   pdf:"Guia_Estudio_Seguros_de_Vida_Capitulo_I.pdf",audio:"https://drive.google.com/file/d/12ptIUGcQ2OesotnDjiU4kkeEzdDP9UgA/preview",atitle:"Cap. I — Solicitud, Aseguramiento y Entrega"},
   {n:2,color:"#1A3A8F",bg:"#E8EEFF",
    title:"Tipos de Pólizas de Seguro de Vida",
    sub:"Seguro a término, vida entera, pólizas ajustables y variables, anualidades. Comparativas detalladas y conceptos clave para el examen.",
@@ -302,7 +303,7 @@ const chs = [
            "Anualidades fija, variable e indexada — quién asume el riesgo",
            "Opciones de pago: Vida Pura, Período Cierto, Reembolso de Efectivo",
            "Anualidades ciertas: Período Fijo vs Cantidad Fija"],
-   pdf:"Guia_Cap_II.pdf",audio:"Audio_Cap_2.m4a",atitle:"Cap. II — Tipos de Pólizas de Seguro de Vida"},
+   pdf:"Guia_Estudio_Seguros_de_Vida_Capitulo_II.pdf",audio:"https://drive.google.com/file/d/1bpkkTft1ClLBAR091vyx_GrhuHWlcUVj/preview",atitle:"Cap. II — Tipos de Pólizas de Seguro de Vida"},
   {n:3,color:"#0D8C6A",bg:"#E4F7F2",
    title:"Disposiciones, Opciones y Enmiendas de Seguro de Vida",
    sub:"Las 14 disposiciones estándar NAIC, anexos (endosos), opciones de no caducidad, dividendos y opciones de liquidación.",
@@ -321,7 +322,7 @@ const chs = [
            "Dividendos: libres de impuesto; interés sobre dividendos SÍ es gravable",
            "Opciones de liquidación: suma global, vida directa, período cierto, cantidad fija",
            "Anexos clave: exención de prima, muerte accidental, asegurabilidad garantizada, beneficio acelerado"],
-   pdf:"Guia_Cap_III.pdf",audio:"Audio_Cap_3.m4a",atitle:"Cap. III — Disposiciones, Opciones y Enmiendas"},
+   pdf:"Guia_Estudio_Seguros_de_Vida_Capitulo_III.pdf",audio:"https://drive.google.com/file/d/1JKE4EvygN41zpBOi9smgxMlxNR2TE85q/preview",atitle:"Cap. III — Disposiciones, Opciones y Enmiendas"},
   {n:4,color:"#A07800",bg:"#FFFBE8",
    title:"Jubilación y Otros Conceptos",
    sub:"IRA tradicional vs Roth, planes de jubilación para empleadores, tratamiento fiscal del seguro de vida, MEC y seguros de negocios.",
@@ -340,7 +341,7 @@ const chs = [
            "Buy-Sell: Cross-Purchase vs. Entity Plan",
            "Seguridad Social (OASDI): 40 créditos = fully insured, 6 = currently insured",
            "Blackout Period — razón clave para el seguro de vida"],
-   pdf:"Guia_Cap_IV.pdf",audio:"Audio_Cap_4.m4a",atitle:"Cap. IV — Jubilación y Otros Conceptos"},
+   pdf:"Guia_Estudio_Seguros_de_Vida_Capitulo_IV.pdf",audio:"https://drive.google.com/file/d/1nU03CkY3fcHiYon_I7XweCeSmH20DbMr/preview",atitle:"Cap. IV — Jubilación y Otros Conceptos"},
   {n:5,color:"#6B3DBF",bg:"#F0EBFF",
    title:"Estatutos y Reglas de Florida — Regulación y Licencias",
    sub:"Departamento de Servicios Financieros, tipos de aseguradoras, licencias de productores, educación continua y prácticas desleales de comercio.",
@@ -359,7 +360,7 @@ const chs = [
            "Educación Continua: 24 horas cada 2 años, 5 de ética",
            "Churning (misma aseguradora) vs. Conmutación/Twisting (diferente aseguradora)",
            "Rebating, tergiversación, discriminación injusta, fraude, ocultación"],
-   pdf:"Guia_Cap_V.pdf",audio:"Audio_Cap_5.m4a",atitle:"Cap. V — Estatutos y Reglas de Florida I"},
+   pdf:"Guia_Estudio_Seguros_de_Vida_Capitulo_V.pdf",audio:"https://drive.google.com/file/d/1jQhOyTuzRD7NjWPNK34ZHp_dcKm_xfJ6/preview",atitle:"Cap. V — Estatutos y Reglas de Florida I"},
   {n:6,color:"#C2396B",bg:"#FCEEF4",
    title:"Estatutos y Reglas de Florida — Comercialización y Pólizas",
    sub:"Prácticas de comercialización, documentos de divulgación obligatorios, idoneidad (suitability), estándar de mejor interés NAIC, reemplazo de pólizas y seguro de vida grupal en Florida.",
@@ -378,7 +379,7 @@ const chs = [
            "Período de Gracia: 30 días individual / 31 días grupal",
            "Destinatario Secundario: 64+ años con póliza vigente ≥1 año",
            "Conversión grupal en Florida: 31 días, máx. $10,000, sin evidencia de asegurabilidad"],
-   pdf:"Guia_Cap_VI.pdf",audio:"Audio_Cap_6.m4a",atitle:"Cap. VI — Estatutos y Reglas de Florida II"}
+   pdf:"Guia_Estudio_Seguros_de_Vida_Capitulo_VI.pdf",audio:"https://drive.google.com/file/d/1uQi1rl2UeXoAce-LFfeSGVp5Gmwh13b6/preview",atitle:"Cap. VI — Estatutos y Reglas de Florida II"}
 ];
 
 const opened=new Set(), pdfs=new Set(), audios=new Set();
@@ -434,9 +435,8 @@ function renderA(){
             <div class="audio-ch-title">${ch.title}</div>
           </div>
         </div>
-        <audio class="player" controls preload="none" onplay="audios.add(${i})" style="width:100%;border-radius:8px;height:36px">
-          <source src="${ch.audio}" type="audio/mp4">
-        </audio>
+        <iframe src="${ch.audio}" style="width:100%;height:80px;border:none;border-radius:10px;background:transparent" allow="autoplay" onload="audios.add(${i})"></iframe>
+        <button onclick="window.open('https://drive.google.com/file/d/'+('${ch.audio}'.match(/\/d\/([^\/]+)\//)||[])[1]+'/view','_blank')" style="margin-top:6px;width:100%;background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit">🔗 Abrir en Google Drive</button>
       </div>
       <div class="audio-card-body">
         <div class="audio-topics">Temas principales</div>
@@ -489,11 +489,15 @@ function openM(i, focus){
   document.getElementById('mTags').innerHTML=ch.tags.map(t=>`<span class="tag" style="background:${ch.bg};color:${ch.color}">${t}</span>`).join('');
   document.getElementById('mAudioLbl').style.color=ch.color;
 
-  // audio
+  // audio embed
   const au=document.getElementById('mAudio');
   au.src=ch.audio;
   document.getElementById('mAudioTitle').textContent=ch.atitle;
-  au.onplay=()=>{ audios.add(i); };
+  au.onload=()=>{ audios.add(i); };
+  // open in Drive button
+  const driveId=ch.audio.match(/\/d\/([^\/]+)\//)?.[1]||'';
+  const driveShare='https://drive.google.com/file/d/'+driveId+'/view';
+  document.getElementById('mAudioBtn').onclick=()=>window.open(driveShare,'_blank');
 
   // pdf
   const pf=document.getElementById('mPdf');
@@ -514,7 +518,9 @@ function openM(i, focus){
 }
 
 function closeModal(){
-  document.getElementById('mAudio').pause();
+  const mAu=document.getElementById('mAudio');
+  if(mAu&&mAu.tagName==='AUDIO') mAu.pause();
+  else if(mAu) { const s=mAu.src; mAu.src=''; mAu.src=s; }
   document.getElementById('ov').classList.remove('open');
   const cur=document.querySelector('.nbtn.active');
   if(cur&&cur.textContent.trim().includes('Progreso')) renderProg();
