@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIG Academy — Salvatierra Insurance Group</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --orange:#E8621A;--orange-l:#FFF0E8;
+  --blue:#1A3A8F;--blue-l:#E8EEFF;--blue-d:#0F2466;
+  --teal:#0D8C6A;--teal-l:#E4F7F2;
+  --yellow:#F5C842;
+  --pink:#C2396B;--pink-l:#FCEEF4;
+  --purple:#6B3DBF;--purple-l:#F0EBFF;
+  --amber:#A07800;--amber-l:#FFFBE8;
+  --bg:#F5F3EE;--white:#fff;
+  --text:#1A1A1A;--muted:#888;--border:#E8E4DC;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* HEADER */
+.header{background:var(--blue);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;overflow:hidden}
+.header::after{content:'';position:absolute;right:-40px;top:-30px;width:160px;height:160px;border-radius:50%;background:var(--orange);opacity:.12;pointer-events:none}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:#fff;display:flex;align-items:center;gap:8px;z-index:1}
+.logo-mark{width:28px;height:28px;border-radius:8px;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800}
+.logo em{color:var(--yellow);font-style:normal}
+.nav{display:flex;gap:6px;z-index:1}
+.nbtn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.8);border-radius:8px;padding:5px 13px;font-size:12.5px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .18s;white-space:nowrap}
+.nbtn:hover{background:rgba(255,255,255,.2);color:#fff}
+.nbtn.active{background:var(--orange);border-color:var(--orange);color:#fff}
+
+/* HERO */
+.hero{background:linear-gradient(140deg,var(--blue-d) 0%,var(--blue) 70%,#1E4DA8 100%);padding:2rem 1.5rem 1.8rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;left:-80px;bottom:-80px;width:320px;height:320px;border-radius:50%;background:var(--orange);opacity:.07;pointer-events:none}
+.hero::after{content:'';position:absolute;right:20px;top:-60px;width:220px;height:220px;border-radius:50%;background:var(--yellow);opacity:.06;pointer-events:none}
+.hero-eyebrow{font-size:10px;font-weight:600;letter-spacing:2.5px;color:var(--yellow);text-transform:uppercase;margin-bottom:6px}
+.hero-title{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:#fff;line-height:1.15;margin-bottom:4px}
+.hero-title em{color:var(--yellow);font-style:normal}
+.hero-sub{color:rgba(255,255,255,.5);font-size:13px;margin-bottom:1.5rem}
+.hero-stats{display:flex;gap:24px}
+.snum{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--yellow)}
+.slbl{font-size:10px;color:rgba(255,255,255,.38);margin-top:1px}
+
+/* TABS */
+.tabs{background:var(--white);border-bottom:1px solid var(--border);display:flex;padding:0 1.5rem;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab{padding:11px 18px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2.5px solid transparent;white-space:nowrap;transition:all .18s;font-family:'DM Sans',sans-serif;background:none;border-top:none;border-left:none;border-right:none}
+.tab:hover{color:var(--text)}
+.tab.on{color:var(--orange);border-bottom-color:var(--orange);font-weight:600}
+
+/* SEARCH */
+.search-bar{padding:.9rem 1.5rem;background:var(--white);border-bottom:1px solid var(--border);display:flex;gap:8px}
+.search-input{flex:1;background:var(--bg);border:1.5px solid transparent;border-radius:10px;padding:8px 14px;font-size:13.5px;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;transition:all .2s}
+.search-input:focus{border-color:var(--orange);background:var(--white)}
+.search-input::placeholder{color:#C0BAB0}
+.cat-sel{background:var(--bg);border:1.5px solid transparent;border-radius:10px;padding:8px 10px;font-size:13px;font-family:'DM Sans',sans-serif;color:#555;outline:none;cursor:pointer}
+
+/* PAGES */
+.page{padding:1.25rem 1.5rem 3rem}
+.hidden{display:none!important}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+
+/* CARD */
+.ccard{background:var(--white);border-radius:16px;border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:transform .18s,box-shadow .18s}
+.ccard:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.09)}
+.ccard-bar{height:6px}
+.ccard-body{padding:16px 18px 18px}
+.ccard-badge{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:10px}
+.ccard-title{font-family:'Syne',sans-serif;font-size:14.5px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:5px}
+.ccard-sub{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:13px}
+.ccard-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:13px}
+.tag{font-size:10px;font-weight:600;letter-spacing:.5px;padding:3px 8px;border-radius:6px;text-transform:uppercase}
+.ccard-btns{display:flex;gap:8px}
+.abtn{flex:1;padding:9px 0;border-radius:10px;border:none;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:5px;transition:opacity .15s}
+.abtn:hover{opacity:.85}
+
+/* SEC HEADER */
+.sec-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.sec-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:700}
+.sec-sub{font-size:11px;color:var(--muted);font-weight:500}
+
+/* AUDIO CARD */
+.audio-card{background:var(--white);border-radius:16px;border:1px solid var(--border);overflow:hidden}
+.audio-card-top{background:linear-gradient(140deg,var(--blue-d),var(--blue));padding:16px 18px;position:relative;overflow:hidden}
+.audio-card-top::before{content:'';position:absolute;right:-20px;top:-20px;width:100px;height:100px;border-radius:50%;background:var(--orange);opacity:.15;pointer-events:none}
+.audio-card-hdr{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.audio-icon{width:42px;height:42px;border-radius:12px;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.audio-ch-num{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:rgba(255,255,255,.5);margin-bottom:2px;text-transform:uppercase;letter-spacing:1px}
+.audio-ch-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#fff;line-height:1.3}
+audio.player{width:100%;border-radius:8px;height:36px}
+.audio-card-body{padding:12px 18px 16px}
+.audio-topics{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.audio-topic-item{font-size:12px;color:#555;padding:4px 0;border-bottom:1px solid var(--border)}
+.audio-topic-item:last-child{border-bottom:none}
+.audio-more{font-size:11px;color:var(--muted);margin-top:5px}
+
+/* PROGRESS */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.stat-box{background:var(--white);border-radius:14px;padding:14px;border:1px solid var(--border);text-align:center}
+.sb-num{font-family:'Syne',sans-serif;font-size:26px;font-weight:800}
+.sb-lbl{font-size:11px;color:var(--muted);margin-top:2px}
+.prog-item{background:var(--white);border-radius:14px;padding:14px 16px;border:1px solid var(--border);display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.prog-ico{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;flex-shrink:0}
+.prog-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:6px}
+.prog-row{display:flex;align-items:center;gap:8px}
+.prog-bg{flex:1;height:5px;background:var(--bg);border-radius:5px;overflow:hidden}
+.prog-fill{height:100%;border-radius:5px}
+.prog-pct{font-size:11px;font-weight:700;min-width:36px;text-align:right}
+.prog-chips{display:flex;gap:8px;margin-top:5px}
+.prog-chip{font-size:10px;padding:2px 6px;border-radius:5px}
+
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(5,10,40,.65);z-index:500;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex}
+@media(min-width:600px){.overlay{align-items:center}}
+.modal{background:var(--white);border-radius:24px 24px 0 0;width:100%;max-width:660px;max-height:95vh;display:flex;flex-direction:column;overflow:hidden}
+@media(min-width:600px){.modal{border-radius:20px;max-height:88vh}}
+.modal-stripe{height:8px;flex-shrink:0}
+.modal-body{overflow-y:auto;flex:1;padding:1.5rem}
+.modal-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.close-btn{background:var(--bg);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;color:var(--muted);flex-shrink:0}
+.modal-num{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:8px}
+.modal-title{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;color:var(--text);line-height:1.2;margin-bottom:4px}
+.modal-sub{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px}
+.modal-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+
+/* SECTION LABELS */
+.sec-lbl{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sec-lbl::before{content:'';display:block;width:3px;height:13px;border-radius:2px;background:currentColor}
+
+/* AUDIO BOX */
+.audio-box{background:linear-gradient(140deg,var(--blue-d),var(--blue));border-radius:14px;padding:15px 18px;margin-bottom:20px;position:relative;overflow:hidden}
+.audio-box::before{content:'';position:absolute;right:-20px;top:-20px;width:100px;height:100px;border-radius:50%;background:var(--orange);opacity:.15;pointer-events:none}
+.audio-box-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.abox-icon{width:40px;height:40px;border-radius:10px;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.abox-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:#fff}
+.abox-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:1px}
+
+/* PDF FRAME */
+.pdf-wrap{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px}
+.pdf-frame{width:100%;height:500px;border:none;display:block;background:var(--bg)}
+.pdf-open{background:var(--blue);color:#fff;border:none;border-radius:10px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;transition:opacity .15s}
+.pdf-open:hover{opacity:.85}
+
+/* TOPICS */
+.topic-li{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.topic-li:last-child{border-bottom:none}
+.tdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.ttext{font-size:12.5px;color:#444;flex:1}
+
+/* EMPTY */
+.empty-msg{text-align:center;padding:3rem 1rem;color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">
+    <div class="logo-mark">S</div>
+    SIG <em>Academy</em>
+  </div>
+  <div class="nav">
+    <button class="nbtn active" onclick="nav('guias',this)">📚 Guías</button>
+    <button class="nbtn" onclick="nav('audios',this)">🎧 Audios</button>
+    <button class="nbtn" onclick="nav('progreso',this)">📊 Progreso</button>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-eyebrow">Salvatierra Insurance Group</div>
+  <div class="hero-title">Licencia de Seguros<br>de <em>Vida · Florida</em></div>
+  <div class="hero-sub">6 capítulos · guías PDF + audiolibros de apoyo</div>
+  <div class="hero-stats">
+    <div><div class="snum">6</div><div class="slbl">Guías PDF</div></div>
+    <div><div class="snum">6</div><div class="slbl">Audiolibros</div></div>
+    <div><div class="snum">120+</div><div class="slbl">Preg. práctica</div></div>
+  </div>
+</div>
+
+<!-- ═══ GUÍAS ═══ -->
+<div id="pg-guias">
+  <div class="search-bar">
+    <input class="search-input" id="gSearch" placeholder="Buscar capítulo, tema o concepto…" oninput="filterG()">
+    <select class="cat-sel" id="gCat" onchange="filterG()">
+      <option value="">Todos</option>
+      <option>Contratos</option><option>Pólizas</option>
+      <option>Florida</option><option>Jubilación</option><option>Regulación</option>
+    </select>
+  </div>
+  <div class="page">
+    <div class="sec-hdr">
+      <div class="sec-title">Guías de Estudio</div>
+      <div class="sec-sub" id="g-count">6 capítulos</div>
+    </div>
+    <div class="grid" id="gGrid"></div>
+  </div>
+</div>
+
+<!-- ═══ AUDIOS ═══ -->
+<div id="pg-audios" class="hidden">
+  <div class="page">
+    <div class="sec-hdr">
+      <div class="sec-title">Audiolibros</div>
+      <div class="sec-sub">Escucha donde quieras · M4A</div>
+    </div>
+    <div class="grid" id="aGrid"></div>
+  </div>
+</div>
+
+<!-- ═══ PROGRESO ═══ -->
+<div id="pg-progreso" class="hidden">
+  <div class="page">
+    <div class="stats-row">
+      <div class="stat-box"><div class="sb-num" id="sn1" style="color:var(--orange)">0</div><div class="sb-lbl">Abiertos</div></div>
+      <div class="stat-box"><div class="sb-num" id="sn2" style="color:var(--teal)">0</div><div class="sb-lbl">PDFs leídos</div></div>
+      <div class="stat-box"><div class="sb-num" id="sn3" style="color:var(--purple)">0</div><div class="sb-lbl">Audios</div></div>
+    </div>
+    <div class="sec-hdr" style="margin-bottom:10px">
+      <div class="sec-title">Actividad por Capítulo</div>
+    </div>
+    <div id="progList"></div>
+  </div>
+</div>
+
+<!-- ═══ MODAL ═══ -->
+<div class="overlay" id="ov" onclick="closeOv(event)">
+  <div class="modal" id="modal">
+    <div class="modal-stripe" id="mStripe"></div>
+    <div class="modal-body">
+      <div class="modal-row">
+        <div>
+          <div class="modal-num" id="mNum"></div>
+          <div class="modal-title" id="mTitle"></div>
+          <div class="modal-sub" id="mSub"></div>
+        </div>
+        <button class="close-btn" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-tags" id="mTags"></div>
+
+      <!-- audio -->
+      <div class="sec-lbl" id="mAudioLbl" style="color:var(--orange)">Audiolibro de apoyo</div>
+      <div class="audio-box" style="margin-bottom:20px">
+        <div class="audio-box-hdr">
+          <div class="abox-icon">🎧</div>
+          <div>
+            <div class="abox-title" id="mAudioTitle"></div>
+            <div class="abox-sub">Escuchar capítulo completo · M4A</div>
+          </div>
+        </div>
+        <audio id="mAudio" class="player" controls preload="none" style="width:100%;border-radius:8px;height:36px"></audio>
+      </div>
+
+      <!-- pdf -->
+      <div class="sec-lbl" style="color:var(--blue);margin-bottom:8px">Guía de Estudio PDF</div>
+      <div class="pdf-wrap">
+        <iframe id="mPdf" class="pdf-frame" title="Guía de estudio"></iframe>
+      </div>
+      <button class="pdf-open" id="mPdfOpen" style="margin-bottom:20px">📄 Abrir PDF en nueva pestaña</button>
+
+      <!-- topics -->
+      <div class="sec-lbl" style="color:var(--muted);margin-bottom:10px">Temas cubiertos</div>
+      <div id="mTopics"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const chs = [
+  {n:1,color:"#E8621A",bg:"#FFF0E8",
+   title:"Llenar la Solicitud, Aseguramiento y Entrega de la Póliza",
+   sub:"Contratos, elementos legales, proceso de suscripción, clasificación de riesgo y las 4 leyes federales clave: FCRA, HIPAA, Gramm-Leach-Bliley y USA PATRIOT.",
+   tags:["Contratos","Suscripción","Leyes Federales"],
+   topics:["Elementos de un contrato legal: Oferta, Consideración, Partes Competentes, Propósito Legal",
+           "Contratos de adhesión, aleatorio, unilateral y condicional",
+           "Representaciones vs. Garantías en la solicitud",
+           "Responsabilidades del agente como suscriptor de campo",
+           "Recibo condicional e inicio de cobertura",
+           "Clasificación de riesgo: preferido, estándar, subestandar, declinado",
+           "STOLI e IOLI — fraude de seguros",
+           "Fair Credit Reporting Act (FCRA) — protección de datos",
+           "HIPAA — derechos sobre registros médicos (6 años)",
+           "Gramm-Leach-Bliley — privacidad financiera",
+           "USA PATRIOT — reporte de actividad sospechosa ($5,000)",
+           "Guía del comprador: antes de la prima inicial",
+           "Disposición de Vistazo Gratis (Free Look)"],
+   pdf:"Guia_Cap_I.pdf",audio:"Audio_Cap_1.m4a",atitle:"Cap. I — Solicitud, Aseguramiento y Entrega"},
+  {n:2,color:"#1A3A8F",bg:"#E8EEFF",
+   title:"Tipos de Pólizas de Seguro de Vida",
+   sub:"Seguro a término, vida entera, pólizas ajustables y variables, anualidades. Comparativas detalladas y conceptos clave para el examen.",
+   tags:["Pólizas","Anualidades","Variable"],
+   topics:["Seguro de término: nivelado, renovable anual (ART), decreciente, devolución de prima",
+           "Características renovable y convertible — sin prueba de asegurabilidad",
+           "Vida Entera: ordinaria, pago limitado (20-Pay), prima única",
+           "Madurez de póliza a los 100 años — valor en efectivo = valor nominal",
+           "Vida Universal: prima flexible, Opción A (constante) vs Opción B (creciente)",
+           "Vida Variable: prima fija, riesgo del dueño, requiere licencia de valores",
+           "Vida Variable Universal (VUL) — flexible + inversión variable",
+           "Vida Indexada: mínimo garantizado + índice S&P 500",
+           "Vida Mancomunada: primero en morir vs. sobreviviente (segundo en morir)",
+           "Anualidades: inmediata (≤1 año) vs diferida (>1 año)",
+           "Anualidades fija, variable e indexada — quién asume el riesgo",
+           "Opciones de pago: Vida Pura, Período Cierto, Reembolso de Efectivo",
+           "Anualidades ciertas: Período Fijo vs Cantidad Fija"],
+   pdf:"Guia_Cap_II.pdf",audio:"Audio_Cap_2.m4a",atitle:"Cap. II — Tipos de Pólizas de Seguro de Vida"},
+  {n:3,color:"#0D8C6A",bg:"#E4F7F2",
+   title:"Disposiciones, Opciones y Enmiendas de Seguro de Vida",
+   sub:"Las 14 disposiciones estándar NAIC, anexos (endosos), opciones de no caducidad, dividendos y opciones de liquidación.",
+   tags:["Pólizas","Disposiciones","Beneficiarios"],
+   topics:["Las 14 disposiciones estándar de póliza (NAIC)",
+           "Contrato Entero = póliza + copia solicitud + endosos",
+           "Vistazo Gratis: 14 días desde recepción (Florida)",
+           "Derechos de propiedad — solo el dueño de la póliza",
+           "Cesión Absoluta (completa/permanente) vs. Colateral (parcial/temporal)",
+           "Beneficiario per cápita vs. por estirpe",
+           "Designaciones revocables vs. irrevocables",
+           "Período de gracia estándar: 30 días",
+           "Incontestabilidad: después de 2 años de vigencia",
+           "Reinstalación: máx. 3 años, requiere evidencia de asegurabilidad",
+           "Opciones sin riesgo de pérdida: término extendido (automático) y pagado reducido",
+           "Dividendos: libres de impuesto; interés sobre dividendos SÍ es gravable",
+           "Opciones de liquidación: suma global, vida directa, período cierto, cantidad fija",
+           "Anexos clave: exención de prima, muerte accidental, asegurabilidad garantizada, beneficio acelerado"],
+   pdf:"Guia_Cap_III.pdf",audio:"Audio_Cap_3.m4a",atitle:"Cap. III — Disposiciones, Opciones y Enmiendas"},
+  {n:4,color:"#A07800",bg:"#FFFBE8",
+   title:"Jubilación y Otros Conceptos",
+   sub:"IRA tradicional vs Roth, planes de jubilación para empleadores, tratamiento fiscal del seguro de vida, MEC y seguros de negocios.",
+   tags:["Jubilación","Fiscal","Negocios"],
+   topics:["FIFO (seguro de vida) vs. LIFO (anualidades y MEC)",
+           "IRA Tradicional vs. IRA Roth — cuadro comparativo",
+           "Excepciones penalidad 10%: 59½, primera casa ($10K), educación, incapacidad",
+           "Planes para empleadores: Keogh, SEP, SIMPLE (≤100 empleados), 401(k), 403(b)",
+           "Rollover: 60 días, retención del 20% automática si es indirecto",
+           "Transferencia Directa: sin retención, más segura",
+           "MEC — Modified Endowment Contract: prueba de 7 pagos, reglas LIFO",
+           "Tratamiento fiscal: beneficio por muerte libre de impuesto; rescate solo exceso gravable",
+           "Seguro grupal: contributario (75%) vs. no contributario (100%)",
+           "Privilegio de conversión grupal: 31 días, sin evidencia, NO a término",
+           "Key Person Insurance: empresa es dueño y beneficiario; prima NO deducible",
+           "Buy-Sell: Cross-Purchase vs. Entity Plan",
+           "Seguridad Social (OASDI): 40 créditos = fully insured, 6 = currently insured",
+           "Blackout Period — razón clave para el seguro de vida"],
+   pdf:"Guia_Cap_IV.pdf",audio:"Audio_Cap_4.m4a",atitle:"Cap. IV — Jubilación y Otros Conceptos"},
+  {n:5,color:"#6B3DBF",bg:"#F0EBFF",
+   title:"Estatutos y Reglas de Florida — Regulación y Licencias",
+   sub:"Departamento de Servicios Financieros, tipos de aseguradoras, licencias de productores, educación continua y prácticas desleales de comercio.",
+   tags:["Florida","Regulación","Licencias"],
+   topics:["Aseguradoras: doméstica (mismo estado), extranjera (otro estado EE.UU.), foránea (fuera de EE.UU.)",
+           "Certificado de autoridad — obligatorio antes de operar",
+           "Compañía de acciones (accionistas) vs. mutua (dueños de pólizas) vs. fraternal",
+           "Reaseguro: cedente transfiere riesgo; aseguradora que asume lo acepta",
+           "Departamento de Servicios Financieros — creado 2003, 15 divisiones",
+           "Comisión: Gobernador + Procurador General + CFO + Comisionado de Agricultura",
+           "Exámenes de aseguradoras: mínimo cada 5 años",
+           "Formularios de pólizas: 30 días antes; silencio = aprobación automática",
+           "Orden de Cesar y Desistir: multa hasta $50,000",
+           "Agente representa al ASEGURADOR; corredor representa al ASEGURADO",
+           "Nombramiento requerido para operar (licencia sola no basta)",
+           "Educación Continua: 24 horas cada 2 años, 5 de ética",
+           "Churning (misma aseguradora) vs. Conmutación/Twisting (diferente aseguradora)",
+           "Rebating, tergiversación, discriminación injusta, fraude, ocultación"],
+   pdf:"Guia_Cap_V.pdf",audio:"Audio_Cap_5.m4a",atitle:"Cap. V — Estatutos y Reglas de Florida I"},
+  {n:6,color:"#C2396B",bg:"#FCEEF4",
+   title:"Estatutos y Reglas de Florida — Comercialización y Pólizas",
+   sub:"Prácticas de comercialización, documentos de divulgación obligatorios, idoneidad (suitability), estándar de mejor interés NAIC, reemplazo de pólizas y seguro de vida grupal en Florida.",
+   tags:["Florida","Regulación","Grupal"],
+   topics:["Guía del Comprador: antes del primer pago de prima",
+           "Resumen de Póliza: documento SEPARADO, no con la presentación",
+           "Regalos publicitarios: máximo $100 por asegurado por año calendario",
+           "Regulación de solicitación: NO aplica a anualidades, grupal, variables, ERISA",
+           "Idoneidad de anualidades: 10 factores a evaluar",
+           "Consumidor mayor: 65+ años (en compra conjunta basta uno con 65+)",
+           "Estándar de Mejor Interés NAIC: Cuidado, Divulgación, Conflicto, Documentación",
+           "Reemplazo: aviso firmado por aspirante y productor",
+           "5 días laborales (reemplazante → solicitante) / 10 días (aseguradora existente → dueño)",
+           "Registros: 3 años (reemplazo) / 5 años (consumidores mayores)",
+           "Free Look: 14 días vida individual / 21 días anualidades",
+           "Período de Gracia: 30 días individual / 31 días grupal",
+           "Destinatario Secundario: 64+ años con póliza vigente ≥1 año",
+           "Conversión grupal en Florida: 31 días, máx. $10,000, sin evidencia de asegurabilidad"],
+   pdf:"Guia_Cap_VI.pdf",audio:"Audio_Cap_6.m4a",atitle:"Cap. VI — Estatutos y Reglas de Florida II"}
+];
+
+const opened=new Set(), pdfs=new Set(), audios=new Set();
+
+// ── GUÍAS ────────────────────────────────────────────────────────────
+function renderG(list){
+  const g=document.getElementById('gGrid');
+  g.innerHTML='';
+  document.getElementById('g-count').textContent=`${list.length} capítulo${list.length!==1?'s':''}`;
+  if(!list.length){g.innerHTML='<div class="empty-msg">Sin resultados. Intenta otro término.</div>';return}
+  list.forEach(ch=>{
+    const d=document.createElement('div');
+    d.className='ccard';
+    d.innerHTML=`
+      <div class="ccard-bar" style="background:${ch.color}"></div>
+      <div class="ccard-body">
+        <div class="ccard-badge" style="background:${ch.bg};color:${ch.color}">${ch.n}</div>
+        <div class="ccard-title">${ch.title}</div>
+        <div class="ccard-sub">${ch.sub}</div>
+        <div class="ccard-tags">${ch.tags.map(t=>`<span class="tag" style="background:${ch.bg};color:${ch.color}">${t}</span>`).join('')}</div>
+        <div class="ccard-btns">
+          <button class="abtn" style="background:${ch.bg};color:${ch.color}" onclick="event.stopPropagation();openM(${ch.n-1},'pdf')">📄 Ver Guía</button>
+          <button class="abtn" style="background:${ch.color};color:#fff" onclick="event.stopPropagation();openM(${ch.n-1},'audio')">🎧 Escuchar</button>
+        </div>
+      </div>`;
+    d.onclick=()=>openM(ch.n-1,'pdf');
+    g.appendChild(d);
+  });
+}
+
+function filterG(){
+  const q=document.getElementById('gSearch').value.toLowerCase();
+  const cat=document.getElementById('gCat').value;
+  renderG(chs.filter(ch=>{
+    const text=(ch.title+ch.sub+ch.tags.join(' ')+ch.topics.join(' ')).toLowerCase();
+    return(!q||text.includes(q))&&(!cat||ch.tags.includes(cat));
+  }));
+}
+
+// ── AUDIOS ────────────────────────────────────────────────────────────
+function renderA(){
+  const g=document.getElementById('aGrid');
+  g.innerHTML='';
+  chs.forEach((ch,i)=>{
+    const d=document.createElement('div');
+    d.className='audio-card';
+    d.innerHTML=`
+      <div class="audio-card-top">
+        <div class="audio-card-hdr">
+          <div class="audio-icon">🎧</div>
+          <div>
+            <div class="audio-ch-num">Capítulo ${ch.n}</div>
+            <div class="audio-ch-title">${ch.title}</div>
+          </div>
+        </div>
+        <audio class="player" controls preload="none" onplay="audios.add(${i})" style="width:100%;border-radius:8px;height:36px">
+          <source src="${ch.audio}" type="audio/mp4">
+        </audio>
+      </div>
+      <div class="audio-card-body">
+        <div class="audio-topics">Temas principales</div>
+        ${ch.topics.slice(0,4).map(t=>`<div class="audio-topic-item">${t}</div>`).join('')}
+        <div class="audio-more">+${ch.topics.length-4} temas más en la guía PDF →</div>
+      </div>`;
+    g.appendChild(d);
+  });
+}
+
+// ── PROGRESO ──────────────────────────────────────────────────────────
+function renderProg(){
+  document.getElementById('sn1').textContent=opened.size;
+  document.getElementById('sn2').textContent=pdfs.size;
+  document.getElementById('sn3').textContent=audios.size;
+  const list=document.getElementById('progList');
+  list.innerHTML='';
+  chs.forEach((ch,i)=>{
+    const o=opened.has(i), p=pdfs.has(i), a=audios.has(i);
+    const pct=Math.round([o,p,a].filter(Boolean).length/3*100);
+    list.innerHTML+=`
+      <div class="prog-item">
+        <div class="prog-ico" style="background:${ch.bg};color:${ch.color}">${ch.n}</div>
+        <div style="flex:1">
+          <div class="prog-name">${ch.title}</div>
+          <div class="prog-row">
+            <div class="prog-bg"><div class="prog-fill" style="width:${pct}%;background:${ch.color}"></div></div>
+            <span class="prog-pct" style="color:${ch.color}">${pct}%</span>
+          </div>
+          <div class="prog-chips">
+            <span class="prog-chip" style="background:${o?ch.bg:'var(--bg)'};color:${o?ch.color:'#CCC'}">${o?'✓':'○'} Abierto</span>
+            <span class="prog-chip" style="background:${p?ch.bg:'var(--bg)'};color:${p?ch.color:'#CCC'}">${p?'✓':'○'} PDF</span>
+            <span class="prog-chip" style="background:${a?ch.bg:'var(--bg)'};color:${a?ch.color:'#CCC'}">${a?'✓':'○'} Audio</span>
+          </div>
+        </div>
+      </div>`;
+  });
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────
+function openM(i, focus){
+  const ch=chs[i];
+  opened.add(i);
+
+  document.getElementById('mStripe').style.background=ch.color;
+  const numEl=document.getElementById('mNum');
+  numEl.textContent=ch.n; numEl.style.background=ch.bg; numEl.style.color=ch.color;
+  document.getElementById('mTitle').textContent=ch.title;
+  document.getElementById('mSub').textContent=ch.sub;
+  document.getElementById('mTags').innerHTML=ch.tags.map(t=>`<span class="tag" style="background:${ch.bg};color:${ch.color}">${t}</span>`).join('');
+  document.getElementById('mAudioLbl').style.color=ch.color;
+
+  // audio
+  const au=document.getElementById('mAudio');
+  au.src=ch.audio;
+  document.getElementById('mAudioTitle').textContent=ch.atitle;
+  au.onplay=()=>{ audios.add(i); };
+
+  // pdf
+  const pf=document.getElementById('mPdf');
+  pf.src=ch.pdf;
+  pdfs.add(i);
+  document.getElementById('mPdfOpen').onclick=()=>window.open(ch.pdf,'_blank');
+
+  // topics
+  document.getElementById('mTopics').innerHTML=ch.topics.map(t=>
+    `<div class="topic-li"><div class="tdot" style="background:${ch.color}"></div><div class="ttext">${t}</div></div>`
+  ).join('');
+
+  document.getElementById('ov').classList.add('open');
+
+  if(focus==='audio'){
+    setTimeout(()=>{ au.scrollIntoView({behavior:'smooth',block:'center'}); }, 200);
+  }
+}
+
+function closeModal(){
+  document.getElementById('mAudio').pause();
+  document.getElementById('ov').classList.remove('open');
+  const cur=document.querySelector('.nbtn.active');
+  if(cur&&cur.textContent.trim().includes('Progreso')) renderProg();
+}
+
+function closeOv(e){ if(e.target===document.getElementById('ov')) closeModal(); }
+
+// ── NAV ───────────────────────────────────────────────────────────────
+function nav(name, btn){
+  ['guias','audios','progreso'].forEach(p=>{
+    const el=document.getElementById('pg-'+p);
+    p===name ? el.classList.remove('hidden') : el.classList.add('hidden');
+  });
+  document.querySelectorAll('.nbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(name==='progreso') renderProg();
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────
+renderG(chs);
+renderA();
+</script>
+</body>
+</html>
