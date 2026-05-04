@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SIG Academy — Salvatierra Insurance Group</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";</script>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -138,10 +140,15 @@ audio.player{width:100%;border-radius:8px;height:36px}
 .abox-sub{font-size:11px;color:rgba(255,255,255,.45);margin-top:1px}
 
 /* PDF FRAME */
-.pdf-wrap{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px}
-.pdf-frame{width:100%;height:500px;border:none;display:block;background:var(--bg)}
-.pdf-open{background:var(--blue);color:#fff;border:none;border-radius:10px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;transition:opacity .15s}
-.pdf-open:hover{opacity:.85}
+.pdf-wrap{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px;background:var(--bg);position:relative}
+.pdf-canvas-wrap{width:100%;height:520px;overflow-y:auto;overflow-x:hidden;background:#525659;padding:12px 0;display:flex;flex-direction:column;align-items:center;gap:8px;-webkit-overflow-scrolling:touch}
+.pdf-canvas-wrap canvas{max-width:100%;box-shadow:0 2px 12px rgba(0,0,0,.4);border-radius:2px}
+.pdf-controls{display:flex;align-items:center;justify-content:center;gap:10px;padding:8px 12px;background:#3d4043;border-top:1px solid rgba(255,255,255,.08)}
+.pdf-ctrl-btn{background:rgba(255,255,255,.12);border:none;color:#fff;border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}
+.pdf-ctrl-btn:hover{background:rgba(255,255,255,.22)}
+.pdf-ctrl-btn:disabled{opacity:.35;cursor:not-allowed}
+.pdf-page-info{font-size:12px;color:rgba(255,255,255,.7);font-family:'DM Sans',sans-serif;min-width:80px;text-align:center}
+.pdf-loading{display:flex;align-items:center;justify-content:center;height:200px;color:rgba(255,255,255,.5);font-size:13px;font-family:'DM Sans',sans-serif}
 
 /* TOPICS */
 .topic-li{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
@@ -321,9 +328,15 @@ audio.player{width:100%;border-radius:8px;height:36px}
       <!-- pdf -->
       <div class="sec-lbl" style="color:var(--blue);margin-bottom:8px">Guía de Estudio PDF</div>
       <div class="pdf-wrap">
-        <iframe id="mPdf" class="pdf-frame" title="Guía de estudio"></iframe>
+        <div class="pdf-canvas-wrap" id="pdfCanvasWrap">
+          <div class="pdf-loading" id="pdfLoading">⏳ Cargando guía...</div>
+        </div>
+        <div class="pdf-controls">
+          <button class="pdf-ctrl-btn" id="pdfPrev" onclick="changePdfPage(-1)" disabled>◀ Anterior</button>
+          <span class="pdf-page-info" id="pdfPageInfo">— / —</span>
+          <button class="pdf-ctrl-btn" id="pdfNext" onclick="changePdfPage(1)" disabled>Siguiente ▶</button>
+        </div>
       </div>
-      <button class="pdf-open" id="mPdfOpen" style="margin-bottom:20px">📄 Abrir PDF en nueva pestaña</button>
 
       <!-- topics -->
       <div class="sec-lbl" style="color:var(--muted);margin-bottom:10px">Temas cubiertos</div>
@@ -565,11 +578,9 @@ function openM(i, focus){
   const driveShare='https://drive.google.com/file/d/'+driveId+'/view';
   document.getElementById('mAudioBtn').onclick=()=>window.open(driveShare,'_blank');
 
-  // pdf
-  const pf=document.getElementById('mPdf');
-  pf.src=ch.pdf;
+  // pdf - load with PDF.js (no download)
   pdfs.add(i);
-  document.getElementById('mPdfOpen').onclick=()=>window.open(ch.pdf,'_blank');
+  loadPdf(ch.pdf);
 
   // topics
   document.getElementById('mTopics').innerHTML=ch.topics.map(t=>
@@ -608,6 +619,67 @@ function nav(name, btn){
 // ── INIT ──────────────────────────────────────────────────────────────
 renderG(chs);
 renderA();
+
+// ── PDF.js VIEWER ─────────────────────────────────────────────────────
+let pdfDoc=null, pdfPage=1, pdfRendering=false;
+
+function loadPdf(url){
+  pdfDoc=null; pdfPage=1;
+  document.getElementById('pdfLoading').style.display='flex';
+  document.getElementById('pdfCanvasWrap').innerHTML='<div class="pdf-loading" id="pdfLoading">⏳ Cargando guía...</div>';
+  document.getElementById('pdfPageInfo').textContent='— / —';
+  document.getElementById('pdfPrev').disabled=true;
+  document.getElementById('pdfNext').disabled=true;
+
+  pdfjsLib.getDocument(url).promise.then(function(doc){
+    pdfDoc=doc;
+    document.getElementById('pdfPageInfo').textContent='1 / '+doc.numPages;
+    document.getElementById('pdfNext').disabled=(doc.numPages<=1);
+    renderAllPages(doc);
+  }).catch(function(err){
+    document.getElementById('pdfCanvasWrap').innerHTML='<div class="pdf-loading">❌ Error al cargar el PDF</div>';
+    console.error(err);
+  });
+}
+
+function renderAllPages(doc){
+  const wrap=document.getElementById('pdfCanvasWrap');
+  wrap.innerHTML='';
+  const total=doc.numPages;
+  for(let p=1;p<=total;p++){
+    (function(pageNum){
+      doc.getPage(pageNum).then(function(page){
+        const scale=1.4;
+        const vp=page.getViewport({scale});
+        const canvas=document.createElement('canvas');
+        canvas.height=vp.height;
+        canvas.width=vp.width;
+        canvas.style.maxWidth='100%';
+        canvas.style.boxShadow='0 2px 12px rgba(0,0,0,.4)';
+        canvas.style.borderRadius='2px';
+        const ctx=canvas.getContext('2d');
+        page.render({canvasContext:ctx,viewport:vp});
+        wrap.appendChild(canvas);
+        // disable right-click on canvas
+        canvas.addEventListener('contextmenu',e=>e.preventDefault());
+      });
+    })(p);
+  }
+}
+
+function changePdfPage(dir){
+  if(!pdfDoc) return;
+  const newPage=pdfPage+dir;
+  if(newPage<1||newPage>pdfDoc.numPages) return;
+  pdfPage=newPage;
+  document.getElementById('pdfPageInfo').textContent=pdfPage+' / '+pdfDoc.numPages;
+  document.getElementById('pdfPrev').disabled=(pdfPage<=1);
+  document.getElementById('pdfNext').disabled=(pdfPage>=pdfDoc.numPages);
+  // scroll to page
+  const canvases=document.getElementById('pdfCanvasWrap').querySelectorAll('canvas');
+  if(canvases[pdfPage-1]) canvases[pdfPage-1].scrollIntoView({behavior:'smooth',block:'start'});
+}
+// ─────────────────────────────────────────────────────────────────────
 
 // ── PASSWORD PROTECTION ───────────────────────────────────────────────
 const PASSWORDS = ['SIG2025', 'salvatierra', 'florida2025'];  // ← agrega o cambia contraseñas aquí
